@@ -1,0 +1,45 @@
+From 9f2c7ec4d8b07e82663ad084c90c016d3c3b80c2 Mon Sep 17 00:00:00 2001
+From: Werner Koch <wk@gnupg.org>
+Date: Tue, 23 Oct 2018 22:51:40 +0200
+Subject: [PATCH 088/152] sexp: Fix uninitialized use of a var in the error
+ case.
+
+* src/sexp.c (_gcry_sexp_vextract_param): Initialize L1.
+--
+GnuPG-bug-id: 4212
+
+Signed-off-by: Werner Koch <wk@gnupg.org>
+---
+ src/gcrypt.h.in | 2 +-
+ src/sexp.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/gcrypt.h.in b/src/gcrypt.h.in
+index d2dfe80..36bbf20 100644
+--- a/src/gcrypt.h.in
++++ b/src/gcrypt.h.in
+@@ -1318,7 +1318,7 @@ gpg_error_t gcry_md_extract (gcry_md_hd_t hd, int algo, void *buffer,
+                              size_t length);
+ 
+ /* Convenience function to calculate the hash from the data in BUFFER
+-   of size LENGTH using the algorithm ALGO avoiding the creating of a
++   of size LENGTH using the algorithm ALGO avoiding the creation of a
+    hash object.  The hash is returned in the caller provided buffer
+    DIGEST which must be large enough to hold the digest of the given
+    algorithm. */
+diff --git a/src/sexp.c b/src/sexp.c
+index 9d89268..f2a164c 100644
+--- a/src/sexp.c
++++ b/src/sexp.c
+@@ -2232,7 +2232,7 @@ _gcry_sexp_vextract_param (gcry_sexp_t sexp, const char *path,
+   gcry_mpi_t *array[20];
+   char arrayisdesc[20];
+   int idx;
+-  gcry_sexp_t l1;
++  gcry_sexp_t l1 = NULL;
+   int mode = '+'; /* Default to GCRYMPI_FMT_USG.  */
+   gcry_sexp_t freethis = NULL;
+ 
+-- 
+1.8.3.1
+

@@ -1,0 +1,64 @@
+From e57e75ea517f32109b508113f18298fc69fd1192 Mon Sep 17 00:00:00 2001
+From: Werner Koch <wk@gnupg.org>
+Date: Wed, 24 Oct 2018 11:50:46 +0200
+Subject: [PATCH 097/152] ecc: Fix memory leak in the error case of
+ ecc_encrypt_raw
+
+* cipher/ecc.c (ecc_encrypt_raw): Add proper error cleanup in the main
+block.
+--
+
+GnuPG-bug-id: 4210
+Signed-off-by: Werner Koch <wk@gnupg.org>
+---
+ cipher/ecc.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/cipher/ecc.c b/cipher/ecc.c
+index 4e3e5b1..3f221a2 100644
+--- a/cipher/ecc.c
++++ b/cipher/ecc.c
+@@ -1392,6 +1392,7 @@ ecc_encrypt_raw (gcry_sexp_t *r_ciph, gcry_sexp_t s_data, gcry_sexp_t keyparms)
+     unsigned char *rawmpi;
+     unsigned int rawmpilen;
+ 
++    rc = 0;
+     x = mpi_new (0);
+     if (ec->model == MPI_EC_MONTGOMERY)
+       y = NULL;
+@@ -1418,7 +1419,7 @@ ecc_encrypt_raw (gcry_sexp_t *r_ciph, gcry_sexp_t s_data, gcry_sexp_t keyparms)
+         if (!(flags & PUBKEY_FLAG_DJB_TWEAK))
+           { /* It's not for X25519, then, the input data was simply wrong.  */
+             rc = GPG_ERR_INV_DATA;
+-            goto leave;
++            goto leave_main;
+           }
+       }
+     if (y)
+@@ -1443,7 +1444,7 @@ ecc_encrypt_raw (gcry_sexp_t *r_ciph, gcry_sexp_t s_data, gcry_sexp_t keyparms)
+     if (_gcry_mpi_ec_get_affine (x, y, &R, ec))
+       {
+         rc = GPG_ERR_INV_DATA;
+-        goto leave;
++        goto leave_main;
+       }
+     if (y)
+       mpi_e = _gcry_ecc_ec2os (x, y, pk.E.p);
+@@ -1461,11 +1462,12 @@ ecc_encrypt_raw (gcry_sexp_t *r_ciph, gcry_sexp_t s_data, gcry_sexp_t keyparms)
+           }
+       }
+ 
+-
++  leave_main:
+     mpi_free (x);
+     mpi_free (y);
+-
+     point_free (&R);
++    if (rc)
++      goto leave;
+   }
+ 
+   if (!rc)
+-- 
+1.8.3.1
+
