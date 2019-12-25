@@ -1,7 +1,7 @@
 %define gcrylibdir %{_libdir}
 Name:          libgcrypt
 Version:       1.8.3
-Release:       4
+Release:       5
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -27,6 +27,12 @@ Patch6000:     sexp-Fix-uninitialized-use-of-a-var-in-the-error-cas.patch
 Patch6001:     ecc-Fix-possible-memory-leakage-in-parameter-check-o.patch
 Patch6002:     ecc-Fix-memory-leak-in-the-error-case-of-ecc_encrypt.patch
 Patch6003:     Fix-memory-leak-in-secmem-in-out-of-core-conditions.patch
+
+Patch6004:     CVE-2019-12904-1.patch
+Patch6005:     CVE-2019-12904-2.patch
+Patch6006:     CVE-2019-12904-3.patch
+Patch6007:     CVE-2019-13627-1.patch
+Patch6008:     CVE-2019-13627-2.patch
 
 BuildRequires: gcc fipscheck texinfo git
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
@@ -142,5 +148,11 @@ exit 0
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Sat Dec 21 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.8.3-5
+- Type:cves
+- ID:NA
+- SUG:restart
+- DESC:fix CVEs
+
 * Thu Sep 05 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.8.3-4
 - Package init
