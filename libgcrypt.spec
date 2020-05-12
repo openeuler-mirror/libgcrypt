@@ -1,38 +1,32 @@
 %define gcrylibdir %{_libdir}
 Name:          libgcrypt
-Version:       1.8.3
-Release:       5
+Version:       1.8.5
+Release:       1
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
 Source0:       https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-%{version}.tar.gz
-Source2:       wk@g10code.com
-Source3:       hobble-libgcrypt
-Source4:       ecc-curves.c
-Source5:       curves.c
-Source6:       t-mpi-point.c
 Source7:       random.conf
 
 Patch2:        libgcrypt-1.6.2-use-fipscheck.patch
-Patch5:        libgcrypt-1.8.0-tests.patch
+Patch5:        libgcrypt-1.8.4-fips-keygen.patch
+Patch6:        libgcrypt-1.8.4-tests-fipsmode.patch
 Patch7:        libgcrypt-1.7.3-fips-cavs.patch
-Patch11:       libgcrypt-1.8.0-use-poll.patch
+Patch11:       libgcrypt-1.8.4-use-poll.patch
 Patch13:       libgcrypt-1.6.1-mpicoder-gccopt.patch
 Patch14:       libgcrypt-1.7.3-ecc-test-fix.patch
 Patch18:       libgcrypt-1.8.3-fips-ctor.patch
 Patch22:       libgcrypt-1.7.3-fips-reqs.patch
-Patch24:       libgcrypt-1.8.3-getrandom.patch
-
-Patch6000:     sexp-Fix-uninitialized-use-of-a-var-in-the-error-cas.patch
-Patch6001:     ecc-Fix-possible-memory-leakage-in-parameter-check-o.patch
-Patch6002:     ecc-Fix-memory-leak-in-the-error-case-of-ecc_encrypt.patch
-Patch6003:     Fix-memory-leak-in-secmem-in-out-of-core-conditions.patch
+Patch24:       libgcrypt-1.8.4-getrandom.patch
+Patch25:       libgcrypt-1.8.3-cmac-selftest.patch
+Patch26:       libgcrypt-1.8.3-fips-enttest.patch
+Patch27:       libgcrypt-1.8.3-md-fips-enforce.patch
+Patch28:       libgcrypt-1.8.5-intel-cet.patch
+Patch29:       libgcrypt-1.8.5-build.patch
 
 Patch6004:     CVE-2019-12904-1.patch
 Patch6005:     CVE-2019-12904-2.patch
 Patch6006:     CVE-2019-12904-3.patch
-Patch6007:     CVE-2019-13627-1.patch
-Patch6008:     CVE-2019-13627-2.patch
 
 BuildRequires: gcc fipscheck texinfo git
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
@@ -43,9 +37,7 @@ Libgcrypt is a general purpose cryptographic library originally based on code fr
 %package       devel
 Summary:       Development files for the %{name} package
 License:       LGPLv2+ and GPLv2+
-Requires(pre): /sbin/install-info
-Requires(post): /sbin/install-info
-Requires:      libgpg-error-devel %{name} = %{version}-%{release}
+Requires:      libgpg-error-devel %{name} = %{version}-%{release} pkgconfig
 
 %description devel
 Libgcrypt is a general purpose crypto library based on the code used
@@ -56,10 +48,6 @@ applications using libgcrypt.
 
 %prep
 %autosetup -n %{name}-%{version} -p1 -S git
-chmod +x %{SOURCE3}
-%{SOURCE3}
-cp %{SOURCE4} cipher/
-cp %{SOURCE5} %{SOURCE6} tests/
 
 %build
 %configure  --enable-noexecstack --enable-hmac-binary-check \
@@ -70,6 +58,8 @@ sed -i -e '/^sys_lib_dlsearch_path_spec/s,/lib /usr/lib,/usr/lib /lib64 /usr/lib
 
 %check
 fipshmac src/.libs/libgcrypt.so.??
+make check
+
 %define __spec_install_post \
     %{?__debug_package:%{__debug_install_post}} \
     %{__arch_install_post} \
@@ -114,17 +104,6 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 
 %ldconfig_scriptlets
 
-%post devel
-[ -f %{_infodir}/gcrypt.info.gz ] && \
-    /sbin/install-info %{_infodir}/gcrypt.info.gz %{_infodir}/dir
-exit 0
-
-%preun devel
-if [ $1 = 0 -a -f %{_infodir}/gcrypt.info.gz ]; then
-    /sbin/install-info --delete %{_infodir}/gcrypt.info.gz %{_infodir}/dir
-fi
-exit 0
-
 %files
 %defattr(-,root,root)
 %doc AUTHORS NEWS THANKS
@@ -140,6 +119,7 @@ exit 0
 %{_bindir}/*
 %{_includedir}/*
 %{_libdir}/*.so
+%{_libdir}/pkgconfig/libgcrypt.pc
 %{_datadir}/aclocal/*
 
 %files help
@@ -148,6 +128,9 @@ exit 0
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Sat Dec 21 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.8.5-1
+- update to 1.8.5 from upstream
+
 * Sat Dec 21 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.8.3-5
 - Type:cves
 - ID:NA
