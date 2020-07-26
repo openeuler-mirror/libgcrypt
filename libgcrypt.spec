@@ -1,14 +1,17 @@
-%define gcrylibdir %{_libdir}
+%global gcrylibdir %{_libdir}
+%global gcrysoname libgcrypt.so.20
+%global hmackey orboDeJITITejsirpADONivirpUkvarP
+
 Name:          libgcrypt
-Version:       1.8.5
+Version:       1.8.6
 Release:       1
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
-Source0:       https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-%{version}.tar.gz
+Source0:       https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-%{version}.tar.bz2
 Source7:       random.conf
 
-Patch2:        libgcrypt-1.6.2-use-fipscheck.patch
+Patch2:        libgcrypt-1.8.5-use-fipscheck.patch
 Patch5:        libgcrypt-1.8.4-fips-keygen.patch
 Patch6:        libgcrypt-1.8.4-tests-fipsmode.patch
 Patch7:        libgcrypt-1.7.3-fips-cavs.patch
@@ -17,18 +20,19 @@ Patch13:       libgcrypt-1.6.1-mpicoder-gccopt.patch
 Patch14:       libgcrypt-1.7.3-ecc-test-fix.patch
 Patch18:       libgcrypt-1.8.3-fips-ctor.patch
 Patch22:       libgcrypt-1.7.3-fips-reqs.patch
-Patch24:       libgcrypt-1.8.4-getrandom.patch
-Patch25:       libgcrypt-1.8.3-cmac-selftest.patch
-Patch26:       libgcrypt-1.8.3-fips-enttest.patch
-Patch27:       libgcrypt-1.8.3-md-fips-enforce.patch
-Patch28:       libgcrypt-1.8.5-intel-cet.patch
-Patch29:       libgcrypt-1.8.5-build.patch
+#Patch24:       libgcrypt-1.8.5-getrandom.patch
+#Patch25:       libgcrypt-1.8.3-cmac-selftest.patch
+#Patch26:       libgcrypt-1.8.3-fips-enttest.patch
+#Patch27:       libgcrypt-1.8.3-md-fips-enforce.patch
+#Patch28:       libgcrypt-1.8.5-intel-cet.patch
+#Patch29:       libgcrypt-1.8.5-fips-module.patch
+#Patch30:       libgcrypt-1.8.5-aes-perf.patch
 
 Patch6004:     CVE-2019-12904-1.patch
 Patch6005:     CVE-2019-12904-2.patch
 Patch6006:     CVE-2019-12904-3.patch
 
-BuildRequires: gcc fipscheck texinfo git
+BuildRequires: gcc texinfo git autoconf automake libtool
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
 
 %description
@@ -50,21 +54,25 @@ applications using libgcrypt.
 %autosetup -n %{name}-%{version} -p1 -S git
 
 %build
-%configure  --enable-noexecstack --enable-hmac-binary-check \
+%define _lto_cflags %{nil}
+autoreconf -f
+
+%configure  --disable-static --enable-noexecstack --enable-hmac-binary-check \
      --enable-pubkey-ciphers='dsa elgamal rsa ecc' --disable-O-flag-munging
 
 sed -i -e '/^sys_lib_dlsearch_path_spec/s,/lib /usr/lib,/usr/lib /lib64 /usr/lib64 /lib,g' libtool
 %make_build
 
 %check
-fipshmac src/.libs/libgcrypt.so.??
+src/hmac256 %{hmackey} src/.libs/%{gcrysoname} | cut -f1 -d ' ' >src/.libs/.%{gcrysoname}.hmac
+
 make check
 
 %define __spec_install_post \
     %{?__debug_package:%{__debug_install_post}} \
     %{__arch_install_post} \
     %{__os_install_post} \
-    fipshmac $RPM_BUILD_ROOT%{gcrylibdir}/*.so.?? \
+    src/hmac256 %{hmackey} $RPM_BUILD_ROOT%{gcrylibdir}/%{gcrysoname} | cut -f1 -d ' ' >$RPM_BUILD_ROOT%{gcrylibdir}/.%{gcrysoname}.hmac \
 %{nil}
 
 %install
@@ -128,6 +136,9 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Sun Jul 26 2020 openEuler Buildteam <buildteam@openeuler.org> - 1.8.6-1
+- update to 1.8.6 from upstream
+
 * Sat Dec 21 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.8.5-1
 - update to 1.8.5 from upstream
 
