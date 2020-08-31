@@ -281,5 +281,5 @@ diff -up libgcrypt-1.8.5/src/global.c.getrandom libgcrypt-1.8.5/src/global.c
 +
 +  in_constructor = 0;
  }
-  
+ 
  /* This function is called by the macro fips_is_operational and makes
