@@ -4,7 +4,7 @@
 
 Name:          libgcrypt
 Version:       1.8.6
-Release:       2
+Release:       3
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -136,6 +136,12 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Sat Sep 19 2020 xiaqirong <xiaqirong1@huawei.com> - 1.8.6-3
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:Fix warnings instroduced by aes-perf patch
+
 * Sun Aug 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 1.8.6-2
 - Type:bugfix
 - ID:NA
