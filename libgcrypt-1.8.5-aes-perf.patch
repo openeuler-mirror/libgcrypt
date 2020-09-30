@@ -1,25 +1,3 @@
-pagure Logo
-rpms / libgcrypt
- Source
- Issues  
- Pull Requests  1
- Stats
- Overview
- Files
- Commits
- Branches
- Forks
- Releases
-Monitoring status:
-Bugzilla Assignee:
-Fedora:
-tmraz
-EPEL:
-tmraz
-Files
-  master
-   libgcrypt-1.8.5-aes-perf.patch
-    
 diff -up libgcrypt-1.8.5/cipher/arcfour.c.aes-perf libgcrypt-1.8.5/cipher/arcfour.c
 --- libgcrypt-1.8.5/cipher/arcfour.c.aes-perf	2017-11-23 19:16:58.000000000 +0100
 +++ libgcrypt-1.8.5/cipher/arcfour.c	2020-04-22 18:29:41.662862382 +0200
@@ -1238,7 +1216,7 @@ diff -up libgcrypt-1.8.5/cipher/cipher-cmac.c.aes-perf libgcrypt-1.8.5/cipher/ci
 diff -up libgcrypt-1.8.5/cipher/cipher-ctr.c.aes-perf libgcrypt-1.8.5/cipher/cipher-ctr.c
 --- libgcrypt-1.8.5/cipher/cipher-ctr.c.aes-perf	2017-11-23 19:16:58.000000000 +0100
 +++ libgcrypt-1.8.5/cipher/cipher-ctr.c	2020-04-22 18:29:41.667862287 +0200
-@@ -81,24 +81,38 @@ _gcry_cipher_ctr_encrypt (gcry_cipher_hd
+@@ -81,24 +81,34 @@ _gcry_cipher_ctr_encrypt (gcry_cipher_hd
      {
        unsigned char tmp[MAX_BLOCKSIZE];
  
@@ -1287,10 +1265,6 @@ diff -up libgcrypt-1.8.5/cipher/cipher-ctr.c.aes-perf libgcrypt-1.8.5/cipher/cip
 +        {
 +          n = inbuflen;
 +          buf_xor(outbuf, inbuf, tmp, inbuflen);
-+
-+          inbuflen -= n;
-+          outbuf += n;
-+          inbuf += n;
 +        }
  
        /* Save the unused bytes of the counter.  */
@@ -2126,7 +2100,7 @@ diff -up libgcrypt-1.8.5/cipher/rfc2268.c.aes-perf libgcrypt-1.8.5/cipher/rfc226
  
 diff -up libgcrypt-1.8.5/cipher/rijndael-aesni.c.aes-perf libgcrypt-1.8.5/cipher/rijndael-aesni.c
 --- libgcrypt-1.8.5/cipher/rijndael-aesni.c.aes-perf	2017-11-23 19:16:58.000000000 +0100
-+++ libgcrypt-1.8.5/cipher/rijndael-aesni.c	2020-04-22 18:29:41.671862210 +0200
++++ libgcrypt-1.8.5/cipher/rijndael-aesni.c	2020-04-28 11:22:26.025519954 +0200
 @@ -327,8 +327,8 @@ _gcry_aes_aesni_do_setkey (RIJNDAEL_cont
  
  
@@ -2266,7 +2240,12 @@ diff -up libgcrypt-1.8.5/cipher/rijndael-aesni.c.aes-perf libgcrypt-1.8.5/cipher
  _gcry_aes_aesni_ocb_auth (gcry_cipher_hd_t c, const void *abuf_arg,
                            size_t nblocks)
  {
-@@ -1813,4 +1831,303 @@ _gcry_aes_aesni_ocb_auth (gcry_cipher_hd
+@@ -1810,7 +1828,306 @@ _gcry_aes_aesni_ocb_auth (gcry_cipher_hd
+ 
+   aesni_cleanup ();
+   aesni_cleanup_2_6 ();
++
++  return 0;
  }
  
  
@@ -2409,8 +2388,6 @@ diff -up libgcrypt-1.8.5/cipher/rijndael-aesni.c.aes-perf libgcrypt-1.8.5/cipher
 +
 +  aesni_cleanup ();
 +  aesni_cleanup_2_6 ();
-+
-+  return 0;
 +}
 +
 +
