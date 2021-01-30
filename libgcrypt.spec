@@ -3,34 +3,33 @@
 %global hmackey orboDeJITITejsirpADONivirpUkvarP
 
 Name:          libgcrypt
-Version:       1.8.6
-Release:       3
+Version:       1.8.7
+Release:       1
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
 Source0:       https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-%{version}.tar.bz2
 Source7:       random.conf
 
-Patch2:        libgcrypt-1.8.5-use-fipscheck.patch
-Patch5:        libgcrypt-1.8.4-fips-keygen.patch
-Patch6:        libgcrypt-1.8.4-tests-fipsmode.patch
-Patch7:        libgcrypt-1.7.3-fips-cavs.patch
-Patch11:       libgcrypt-1.8.4-use-poll.patch
-Patch13:       libgcrypt-1.6.1-mpicoder-gccopt.patch
-Patch14:       libgcrypt-1.7.3-ecc-test-fix.patch
-Patch18:       libgcrypt-1.8.3-fips-ctor.patch
-Patch22:       libgcrypt-1.7.3-fips-reqs.patch
-Patch24:       libgcrypt-1.8.5-getrandom.patch
-Patch25:       libgcrypt-1.8.3-cmac-selftest.patch
-Patch26:       libgcrypt-1.8.3-fips-enttest.patch
-Patch27:       libgcrypt-1.8.3-md-fips-enforce.patch
-Patch28:       libgcrypt-1.8.5-intel-cet.patch
-Patch29:       libgcrypt-1.8.5-fips-module.patch
-Patch30:       libgcrypt-1.8.5-aes-perf.patch
-
-Patch6004:     CVE-2019-12904-1.patch
-Patch6005:     CVE-2019-12904-2.patch
-Patch6006:     CVE-2019-12904-3.patch
+Patch0:        libgcrypt-1.8.5-use-fipscheck.patch
+Patch1:        libgcrypt-1.8.4-fips-keygen.patch
+Patch2:        libgcrypt-1.8.4-tests-fipsmode.patch
+Patch3:        libgcrypt-1.7.3-fips-cavs.patch
+Patch4:        libgcrypt-1.8.4-use-poll.patch
+Patch5:        libgcrypt-1.6.1-mpicoder-gccopt.patch
+Patch6:        libgcrypt-1.7.3-ecc-test-fix.patch
+Patch7:        libgcrypt-1.8.3-fips-ctor.patch
+Patch8:        libgcrypt-1.7.3-fips-reqs.patch
+Patch9:        libgcrypt-1.8.5-getrandom.patch
+Patch10:       libgcrypt-1.8.3-cmac-selftest.patch
+Patch11:       libgcrypt-1.8.3-fips-enttest.patch
+Patch12:       libgcrypt-1.8.3-md-fips-enforce.patch
+Patch13:       libgcrypt-1.8.5-intel-cet.patch
+Patch14:       libgcrypt-1.8.5-fips-module.patch
+Patch15:       libgcrypt-1.8.5-aes-perf.patch
+Patch16:       CVE-2019-12904-1.patch
+Patch17:       CVE-2019-12904-2.patch
+Patch18:       CVE-2019-12904-3.patch
 
 BuildRequires: gcc texinfo git autoconf automake libtool
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
@@ -136,6 +135,12 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Fri Jan 29 2021 xihaochen <xihaochen@huawei.com> - 1.8.7-1
+- Type:requirements
+- Id:NA
+- SUG:NA
+- DESC:update libgcrypt to 1.8.7
+
 * Sat Sep 19 2020 xiaqirong <xiaqirong1@huawei.com> - 1.8.6-3
 - Type:bugfix
 - ID:NA
