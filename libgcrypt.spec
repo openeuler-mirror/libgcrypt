@@ -4,7 +4,7 @@
 
 Name:          libgcrypt
 Version:       1.8.6
-Release:       3
+Release:       4
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -32,6 +32,7 @@ Patch6004:     CVE-2019-12904-1.patch
 Patch6005:     CVE-2019-12904-2.patch
 Patch6006:     CVE-2019-12904-3.patch
 Patch6007:     CVE-2021-33560.patch
+Patch6008:     CVE-2021-40528.patch
 
 BuildRequires: gcc texinfo git autoconf automake libtool
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
@@ -137,6 +138,12 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Fri Sep 24 2021 zoulin <zoulin13@huawei.com> - 1.8.6-4
+- Type:cves
+- ID:NA
+- SUG:NA
+- DESC:Fix CVE-2021-33560 CVE-2021-40528
+
 * Sat Jun 19 2021 gaihuiying1 <gaihuiying11@huawei.com> - 1.8.6-3
 - Type:cves
 - ID:NA
