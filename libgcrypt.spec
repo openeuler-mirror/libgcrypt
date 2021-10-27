@@ -142,7 +142,7 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 
 %changelog
 * Wed Oct 27 2021 zhujianwei001 <zhujianwei7@huawei.com> - 1.8.6-5
-- Type:cves
+- Type:requirements
 - ID:NA
 - SUG:NA
 - DESC:Fix CVE-2021-33560 CVE-2021-40528
