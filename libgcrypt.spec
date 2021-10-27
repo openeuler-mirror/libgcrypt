@@ -145,7 +145,7 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 - Type:requirements
 - ID:NA
 - SUG:NA
-- DESC:Fix CVE-2021-33560 CVE-2021-40528
+- DESC:add sm3 support
 
 * Fri Sep 24 2021 zoulin <zoulin13@huawei.com> - 1.8.6-4
 - Type:cves
