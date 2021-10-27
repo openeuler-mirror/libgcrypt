@@ -56,7 +56,7 @@ applications using libgcrypt.
 %package_help
 
 %prep
-%autosetup -n %{name}-%{version} -p1 -S git
+%autosetup -n %{name}-%{version} -p1
 
 %build
 %define _lto_cflags %{nil}
