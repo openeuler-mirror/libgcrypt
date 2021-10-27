@@ -4,7 +4,7 @@
 
 Name:          libgcrypt
 Version:       1.8.7
-Release:       4
+Release:       5
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -32,9 +32,12 @@ Patch17:       CVE-2019-12904-2.patch
 Patch18:       CVE-2019-12904-3.patch
 Patch19:       CVE-2021-33560.patch
 Patch20:       CVE-2021-40528.patch
+Patch21:       backport-add-crypto-hash-sm3.patch
 
 BuildRequires: gcc texinfo autoconf automake libtool
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
+
+Provides:      %{name}-sm3 = %{version}-%{release}
 
 %description
 Libgcrypt is a general purpose cryptographic library originally based on code from GnuPG.
@@ -137,6 +140,12 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Wed Oct 27 2021 zhujianwei001 <zhujianwei7@huawei.com> - 1.8.7-5
+- Type:requirements
+- ID:NA
+- SUG:NA
+- DESC:add support sm3
+
 * Fri Sep 24 2021 zoulin <zoulin13@huawei.com> - 1.8.7-4
 - Type:cves
 - ID:NA
