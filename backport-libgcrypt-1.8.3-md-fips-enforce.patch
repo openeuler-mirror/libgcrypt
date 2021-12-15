@@ -1,0 +1,37 @@
+diff -up libgcrypt-1.8.3/cipher/md.c.fips-enforce libgcrypt-1.8.3/cipher/md.c
+--- libgcrypt-1.8.3/cipher/md.c.fips-enforce	2017-11-23 19:16:58.000000000 +0100
++++ libgcrypt-1.8.3/cipher/md.c	2020-04-17 15:07:31.364945130 +0200
+@@ -409,13 +409,10 @@ md_enable (gcry_md_hd_t hd, int algorith
+     }
+ 
+ 
+-  if (!err && algorithm == GCRY_MD_MD5 && fips_mode ())
++  if (!err && !spec->flags.fips && fips_mode ())
+     {
+-      _gcry_inactivate_fips_mode ("MD5 used");
+       if (_gcry_enforced_fips_mode () )
+         {
+-          /* We should never get to here because we do not register
+-             MD5 in enforced fips mode. But better throw an error.  */
+           err = GPG_ERR_DIGEST_ALGO;
+         }
+     }
+diff --git a/tests/t-kdf.c b/tests/t-kdf.c
+index 7a48e98a..48309b9a 100644
+--- a/tests/t-kdf.c
++++ b/tests/t-kdf.c
+@@ -1104,6 +1104,13 @@ check_pbkdf2 (void)
+                              GCRY_KDF_PBKDF2, tv[tvidx].hashalgo,
+                              tv[tvidx].salt, tv[tvidx].saltlen,
+                              tv[tvidx].c, tv[tvidx].dklen, outbuf);
++      if (gcry_fips_mode_active() && tvidx > 6)
++        {
++          if (!err)
++            fail ("pbkdf2 test %d unexpectedly passed in FIPS mode: %s\n",
++                  tvidx, gpg_strerror (err));
++          continue;
++        }
+       if (err)
+         fail ("pbkdf2 test %d failed: %s\n", tvidx, gpg_strerror (err));
+       else if (memcmp (outbuf, tv[tvidx].dk, tv[tvidx].dklen))
+

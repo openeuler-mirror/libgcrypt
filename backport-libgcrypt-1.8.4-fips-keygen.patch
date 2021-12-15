@@ -1,16 +1,15 @@
 diff -up libgcrypt-1.8.4/cipher/dsa.c.fips-keygen libgcrypt-1.8.4/cipher/dsa.c
 --- libgcrypt-1.8.4/cipher/dsa.c.fips-keygen	2017-11-23 19:16:58.000000000 +0100
 +++ libgcrypt-1.8.4/cipher/dsa.c	2019-02-12 14:29:25.629513989 +0100
-@@ -457,11 +457,22 @@ generate_fips186 (DSA_secret_key *sk, un
+@@ -457,13 +457,22 @@ generate_fips186 (DSA_secret_key *sk, un
                                               &prime_q, &prime_p,
                                               r_counter,
                                               r_seed, r_seedlen);
 -      else
--        ec = _gcry_generate_fips186_3_prime (nbits, qbits, NULL, 0,
 +      else if (!domain->p || !domain->q)
-+        ec = _gcry_generate_fips186_3_prime (nbits, qbits,
-+                                             initial_seed.seed,
-+                                             initial_seed.seedlen,
+         ec = _gcry_generate_fips186_3_prime (nbits, qbits,
+                                              initial_seed.seed,
+                                              initial_seed.seedlen,
                                               &prime_q, &prime_p,
                                               r_counter,
                                               r_seed, r_seedlen, NULL);

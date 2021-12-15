@@ -23,7 +23,7 @@ diff -up libgcrypt-1.8.5/src/fips.c.fips-module libgcrypt-1.8.5/src/fips.c
 -     actually used.  The file itself may be empty.  */
 -  if ( !access (FIPS_FORCE_FILE, F_OK) )
 -    {
--      gcry_assert (!no_fips_mode_required);
+-      gcry_assert (!_gcry_no_fips_mode_required);
 -      goto leave;
 -    }
 -
@@ -42,7 +42,7 @@ diff -up libgcrypt-1.8.5/src/fips.c.fips-module libgcrypt-1.8.5/src/fips.c
 -          {
 -            /* System is in fips mode.  */
 -            fclose (fp);
--            gcry_assert (!no_fips_mode_required);
+-            gcry_assert (!_gcry_no_fips_mode_required);
 -            goto leave;
 -          }
 -        fclose (fp);
@@ -65,7 +65,7 @@ diff -up libgcrypt-1.8.5/src/fips.c.fips-module libgcrypt-1.8.5/src/fips.c
 -  }
 -
    /* Fips not not requested, set flag.  */
-   no_fips_mode_required = 1;
+   _gcry_no_fips_mode_required = 1;
  
 diff -up libgcrypt-1.8.5/src/g10lib.h.fips-module libgcrypt-1.8.5/src/g10lib.h
 --- libgcrypt-1.8.5/src/g10lib.h.fips-module	2020-04-20 19:07:45.918919759 +0200
@@ -77,9 +77,9 @@ diff -up libgcrypt-1.8.5/src/g10lib.h.fips-module libgcrypt-1.8.5/src/g10lib.h
 +/* The name of the file used to force libgcrypt into fips mode. */
 +#define FIPS_FORCE_FILE "/etc/gcrypt/fips_enabled"
 +
- void _gcry_initialize_fips_mode (int force);
+ extern int _gcry_no_fips_mode_required;
  
- int _gcry_fips_mode (void);
+ void _gcry_initialize_fips_mode (int force);
 diff -up libgcrypt-1.8.5/src/global.c.fips-module libgcrypt-1.8.5/src/global.c
 --- libgcrypt-1.8.5/src/global.c.fips-module	2020-04-20 19:07:45.919919741 +0200
 +++ libgcrypt-1.8.5/src/global.c	2020-04-20 19:07:45.950919149 +0200
