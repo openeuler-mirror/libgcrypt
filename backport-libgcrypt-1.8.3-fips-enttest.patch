@@ -2,7 +2,7 @@ diff -up libgcrypt-1.8.3/random/random-drbg.c.fips-enttest libgcrypt-1.8.3/rando
 --- libgcrypt-1.8.3/random/random-drbg.c.fips-enttest	2017-11-23 19:16:58.000000000 +0100
 +++ libgcrypt-1.8.3/random/random-drbg.c	2019-06-24 10:04:23.219547141 +0200
 @@ -317,6 +317,7 @@ struct drbg_state_s
-   unsigned char *ctr_null;	/* CTR mode zero buffer */
+   gcry_cipher_hd_t ctr_handle;	/* CTR mode cipher handle */
    int seeded:1;			/* DRBG fully seeded? */
    int pr:1;			/* Prediction resistance enabled? */
 +  int ent_primed:1;             /* Previous entropy data primed? */

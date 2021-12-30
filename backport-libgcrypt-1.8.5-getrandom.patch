@@ -154,13 +154,13 @@ diff -up libgcrypt-1.8.5/random/rndlinux.c.getrandom libgcrypt-1.8.5/random/rndl
 --- libgcrypt-1.8.5/random/rndlinux.c.getrandom	2020-04-20 15:01:50.159848963 +0200
 +++ libgcrypt-1.8.5/random/rndlinux.c	2020-04-20 16:14:21.901610921 +0200
 @@ -35,6 +35,7 @@
- #include <poll.h>
- #if defined(__linux__) && defined(HAVE_SYSCALL)
+ #if defined(__linux__) || !defined(HAVE_GETENTROPY)
+ #ifdef HAVE_SYSCALL
  # include <sys/syscall.h>
 +# include <linux/random.h>
- #endif
- 
- #include "types.h"
+ # ifdef __NR_getrandom
+ # define getentropy(buf,buflen) syscall (__NR_getrandom, buf, buflen, 0)
+ # endif
 @@ -147,12 +148,12 @@ _gcry_rndlinux_gather_random (void (*add
    if (!add)
      {
@@ -216,25 +216,17 @@ diff -up libgcrypt-1.8.5/random/rndlinux.c.getrandom libgcrypt-1.8.5/random/rndl
      {
        if (fd_random == -1)
          {
-@@ -255,6 +272,7 @@ _gcry_rndlinux_gather_random (void (*add
-        * syscall and not a new device and thus we are not able to use
-        * select(2) to have a timeout. */
- #if defined(__linux__) && defined(HAVE_SYSCALL) && defined(__NR_getrandom)
-+      if (fd == -2)
-         {
-           long ret;
-           size_t nbytes;
 @@ -270,9 +288,7 @@ _gcry_rndlinux_gather_random (void (*add
                _gcry_post_syscall ();
              }
            while (ret == -1 && errno == EINTR);
 -          if (ret == -1 && errno == ENOSYS)
--            ; /* The syscall is not supported - fallback to pulling from fd.  */
+-            ; /* getentropy is not supported - fallback to pulling from fd.  */
 -          else
 +          if (1)
-             { /* The syscall is supported.  Some sanity checks.  */
+             { /* getentropy is supported.  Some sanity checks.  */
                if (ret == -1)
-                 log_fatal ("unexpected error from getrandom: %s\n",
+                 log_fatal ("unexpected error from getentropy: %s\n",
 diff -up libgcrypt-1.8.5/src/g10lib.h.getrandom libgcrypt-1.8.5/src/g10lib.h
 --- libgcrypt-1.8.5/src/g10lib.h.getrandom	2020-04-20 15:08:16.528538580 +0200
 +++ libgcrypt-1.8.5/src/g10lib.h	2020-04-20 15:08:28.641309399 +0200
