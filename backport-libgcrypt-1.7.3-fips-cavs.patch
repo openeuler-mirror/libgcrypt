@@ -262,7 +262,7 @@ diff -up libgcrypt-1.7.3/tests/cavs_driver.pl.cavs libgcrypt-1.7.3/tests/cavs_dr
  	                for (my $j = 0; $j < $iloop; ++$j) {
 +				if ($cipher =~ /des-ede3-ofb/ ||
 +				    (!$enc && $cipher =~ /des-ede3-cfb/)) {
-+					die "Implementation lacks support for TDES OFB and TDES CFB in encryption mode - the problem is that we would need to extract the IV of the last round of encryption which would be the input for the next round - see comments in this script for implementation requirements"; 
++					die "Implementation lacks support for TDES OFB and TDES CFB in encryption mode - the problem is that we would need to extract the IV of the last round of encryption which would be the input for the next round - see comments in this script for implementation requirements";
 +				}
  				$old_old_calc_data = $old_calc_data;
                  	        $old_calc_data = $calc_data;
@@ -426,7 +426,7 @@ diff -up libgcrypt-1.7.3/tests/cavs_driver.pl.cavs libgcrypt-1.7.3/tests/cavs_dr
 +		if (!defined($P) || !defined($Q) || !defined($G) ||
 +		    !defined($seed2) || !defined($c2) || !defined($h2));
 +
-+	
++
 +
 +	$out .= "Seed = $seed\n";
 +	$out .= "c = $c\n";
@@ -434,7 +434,7 @@ diff -up libgcrypt-1.7.3/tests/cavs_driver.pl.cavs libgcrypt-1.7.3/tests/cavs_dr
 +
 +	$c2 = hex($c2);
 +
-+	if (hexcomp($P, $p) && hexcomp($Q, $q) && hexcomp($G, $g) && hexcomp($seed, $seed2) && 
++	if (hexcomp($P, $p) && hexcomp($Q, $q) && hexcomp($G, $g) && hexcomp($seed, $seed2) &&
 +	    $c == $c2 && hex($h) == hex($h2)) {
 +		$out .= "Result = P\n\n";
 +	}
@@ -932,7 +932,7 @@ diff -up libgcrypt-1.7.3/tests/fipsdrv.c.cavs libgcrypt-1.7.3/tests/fipsdrv.c
    err = gcry_pk_genkey (&key, keyspec);
    if (err)
      die ("gcry_pk_genkey failed for DSA: %s\n", gpg_strerror (err));
-+  
++
 +  gcry_sexp_release (keyspec);
 +
 +  return key;
@@ -993,7 +993,7 @@ diff -up libgcrypt-1.7.3/tests/fipsdrv.c.cavs libgcrypt-1.7.3/tests/fipsdrv.c
 +/* Print just the XY private key parameters.  KEY
 +   is the complete key as returned by dsa_gen.  We print to stdout
 +   with one parameter per line in hex format using this order: x, y. */
-+static void 
++static void
 +print_dsa_xy (gcry_sexp_t key)
 +{
 +  gcry_sexp_t l1, l2;
@@ -1011,7 +1011,7 @@ diff -up libgcrypt-1.7.3/tests/fipsdrv.c.cavs libgcrypt-1.7.3/tests/fipsdrv.c
 +  l1 = l2;
 +
 +  /* Extract the parameters from the S-expression and print them to stdout.  */
-+  for (idx=0; "xy"[idx]; idx++) 
++  for (idx=0; "xy"[idx]; idx++)
 +    {
 +      l2 = gcry_sexp_find_token (l1, "xy"+idx, 1);
 +      if (!l2)

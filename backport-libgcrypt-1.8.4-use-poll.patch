@@ -6,9 +6,9 @@ diff -up libgcrypt-1.8.4/random/rndlinux.c.use-poll libgcrypt-1.8.4/random/rndli
  #include <unistd.h>
  #include <fcntl.h>
 +#include <poll.h>
- #if defined(__linux__) && defined(HAVE_SYSCALL)
- # include <sys/syscall.h>
- #endif
+ #if defined(__APPLE__) && defined(__MACH__)
+ #include <Availability.h>
+ #ifdef __MAC_10_11
 @@ -241,9 +242,8 @@ _gcry_rndlinux_gather_random (void (*add
                   return with something we will actually use 100ms. */
    while (length)
@@ -18,8 +18,8 @@ diff -up libgcrypt-1.8.4/random/rndlinux.c.use-poll libgcrypt-1.8.4/random/rndli
        int rc;
 +      struct pollfd pfd;
  
-       /* If we have a modern Linux kernel, we first try to use the new
-        * getrandom syscall.  That call guarantees that the kernel's
+       /* If we have a modern operating system, we first try to use the new
+        * getentropy function.  That call guarantees that the kernel's
 @@ -300,36 +300,25 @@ _gcry_rndlinux_gather_random (void (*add
            any_need_entropy = 1;
          }
