@@ -150,7 +150,7 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 - DESC:Fix CVE-2021-33560 CVE-2021-40528
 
 * Fri Jul 30 2021 chenyanpanHW <chenyanpan@huawei.com> - 1.8.7-3
-- DESC: delete -S git from %autosetup, and delete BuildRequires git
+- DESC: delete -S git from autosetup, and delete BuildRequires git
 
 * Mon Jun 21 2021 gaihuiying1 <gaihuiying1@huawei.com> - 1.8.7-2
 - Type:cves
