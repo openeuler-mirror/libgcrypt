@@ -4,7 +4,7 @@
 
 Name:          libgcrypt
 Version:       1.9.4
-Release:       2
+Release:       1
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -129,9 +129,6 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
-* Thu Oct 13 2022 fuanan <fuanan3@h-partners.com> - 1.9.4-2
-- DESC:fix the changelog exception macro
-
 * Tue Dec 7 2021 zoulin <zoulin13@huawei.com> - 1.9.4-1
 - Type:requirements
 - ID:NA
