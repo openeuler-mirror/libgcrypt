@@ -4,7 +4,7 @@
 
 Name:          libgcrypt
 Version:       1.9.4
-Release:       2
+Release:       3
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -131,6 +131,9 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Thu Oct 13 2022 fuanan <fuanan3@h-partners.com> - 1.9.4-3
+- DESC:fix the changelog exception macro
+
 * Wed Sep 21 2022 zhengxiaoxiao <zhengxiaoxiao2@huawei.com> - 1.9.4-2
 - Type:requirements
 - ID:NA
@@ -150,7 +153,7 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 - DESC:Fix CVE-2021-33560 CVE-2021-40528
 
 * Fri Jul 30 2021 chenyanpanHW <chenyanpan@huawei.com> - 1.8.7-3
-- DESC: delete -S git from %autosetup, and delete BuildRequires git
+- DESC: delete -S git from autosetup, and delete BuildRequires git
 
 * Mon Jun 21 2021 gaihuiying1 <gaihuiying1@huawei.com> - 1.8.7-2
 - Type:cves
