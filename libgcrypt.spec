@@ -4,7 +4,7 @@
 
 Name:          libgcrypt
 Version:       1.9.4
-Release:       2
+Release:       3
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -24,6 +24,8 @@ Patch9:        backport-libgcrypt-1.8.3-fips-enttest.patch
 Patch10:       backport-libgcrypt-1.8.3-md-fips-enforce.patch
 Patch11:       backport-libgcrypt-1.8.5-intel-cet.patch
 Patch12:       backport-libgcrypt-1.8.5-fips-module.patch
+Patch13:       backport-Fix-the-behavior-for-child-process.patch
+Patch14:       backport-Clear-AESWRAP-scratch-area-immediately-after-use.patch
 
 BuildRequires: gcc texinfo autoconf automake libtool
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
@@ -131,6 +133,13 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Mon Nov 14 2022 zhengxiaoxiao <zhengxiaoxiao2@huawei.com> - 1.9.4-3
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:add backport-Fix-the-behavior-for-child-process.patch
+           backport-Clear-AESWRAP-scratch-area-immediately-after-use.patch
+
 * Wed Sep 21 2022 zhengxiaoxiao <zhengxiaoxiao2@huawei.com> - 1.9.4-2
 - Type:requirements
 - ID:NA
