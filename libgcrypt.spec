@@ -4,7 +4,7 @@
 
 Name:          libgcrypt
 Version:       1.9.4
-Release:       2
+Release:       3
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -29,6 +29,8 @@ Patch14:       backport-Clear-AESWRAP-scratch-area-immediately-after-use.patch
 
 BuildRequires: gcc texinfo autoconf automake libtool
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
+
+Provides:      %{name}-sm3 = %{version}-%{release}
 
 %description
 Libgcrypt is a general purpose cryptographic library originally based on code from GnuPG.
@@ -131,6 +133,12 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Tue Dec 13 2022 zhengxiaoxiao <zhengxiaoxiao2@huawei.com> - 1.9.4-3
+- Type:requirements
+- ID:NA
+- SUG:NA
+- DESC:provides libgcrypt-sm3
+
 * Mon Nov 14 2022 zhengxiaoxiao <zhengxiaoxiao@huawei.com> - 1.9.4-2
 - Type:bugfix
 - ID:NA
