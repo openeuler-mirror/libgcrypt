@@ -4,7 +4,7 @@
 
 Name:          libgcrypt
 Version:       1.9.4
-Release:       1
+Release:       2
 Summary:       A general-purpose cryptography library
 License:       LGPLv2+
 URL:           https://www.gnupg.org/
@@ -24,7 +24,7 @@ Patch9:        backport-libgcrypt-1.8.3-fips-enttest.patch
 Patch10:       backport-libgcrypt-1.8.3-md-fips-enforce.patch
 Patch11:       backport-libgcrypt-1.8.5-intel-cet.patch
 Patch12:       backport-libgcrypt-1.8.5-fips-module.patch
-
+Patch13:       fix-clang.patch
 BuildRequires: gcc texinfo autoconf automake libtool
 BuildRequires: gawk libgpg-error-devel >= 1.11 pkgconfig
 
@@ -131,6 +131,9 @@ install -m644 %{SOURCE7} $RPM_BUILD_ROOT/etc/gcrypt/random.conf
 %{_infodir}/gcrypt.info*
 
 %changelog
+* Mon May 22 2023 Xiang Zhang <zhangxiang@iscas.ac.cn> - 1.9.4-2
+- Fix clang build error
+
 * Thu Dec 30 2021 zoulin <zoulin13@huawei.com> - 1.9.4-1
 - Type:requirements
 - ID:NA
